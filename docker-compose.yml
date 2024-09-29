@@ -1,0 +1,29 @@
+version: "3"
+services:
+  db:
+    image: mysql
+    container_name: mydb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Seguro##2022
+      MYSQL_DATABASE: tula
+    ports:
+      - 3307:3306
+
+  adminer:
+    image: adminer
+    container_name: admindb
+    restart: always
+    ports:
+      - 8085:8080
+   
+  miweb:
+    build: .
+    container_name: miweb
+
+    ports:
+      - 80:80
+    links:
+
+      - db
+

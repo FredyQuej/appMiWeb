@@ -2,9 +2,9 @@ pipeline {
     agent {label'UMGSTG'}
     
     environment{
-        fichero = fileExists file: "$ruta/jenkinsarqui" 
+        fichero = fileExists file: "$ruta/appMiWeb" 
         ruta = "/home/jenkins/workspace"
-        repo = "https://diegomusumg-admin@bitbucket.org/diegomusumg/jenkinsarqui.git"
+        repo = "https://github.com/FredyQuej/appMiWeb.git"
       
     }
 
@@ -22,7 +22,7 @@ pipeline {
             when{expression {fichero=='true'}}
             steps{
                 echo message: "clonando"
-                dir ("$ruta/jenkinsarqui"){
+                dir ("$ruta/appMiWeb"){
                 sh 'git pull'
                 sh 'ls -la'   
                 }
@@ -41,7 +41,7 @@ pipeline {
         stage ("dockerdeploy") {
             steps{
                 echo message: "iniciando deploy de app"
-                dir("$ruta/jenkinsarqui"){
+                dir("$ruta/appMiWeb"){
                     sh 'ls -la'
                     sh 'sudo docker-compose up -d'
                 }

@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment{
-        fichero = fileExists file: "$ruta/appMiWeb" 
+        fichero = fileExists file: "$ruta/jenkins" 
         ruta = "/home/jenkins/workspace"
         repo = "https://github.com/FredyQuej/appMiWeb.git"
       
@@ -22,7 +22,7 @@ pipeline {
             when{expression {fichero=='true'}}
             steps{
                 echo message: "clonando"
-                dir ("$ruta/appMiWeb"){
+                dir ("$ruta/jenkins"){
                 sh 'git pull'
                 sh 'ls -la'   
                 }
@@ -41,7 +41,7 @@ pipeline {
         stage ("dockerdeploy") {
             steps{
                 echo message: "iniciando deploy de app"
-                dir("$ruta/appMiWeb"){
+                dir("$ruta/jenkins"){
                     sh 'ls -la'
                     sh 'docker-compose up -d'
                 }

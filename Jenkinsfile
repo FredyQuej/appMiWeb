@@ -32,9 +32,9 @@ pipeline {
         stage ("destructiondocker"){
             steps{
             echo message: "Deteniendo contenedores"
-            sh 'sudo docker stop mydb admindb web'
+            sh 'docker stop mydb admindb web'
             echo message: "destruyendo contenedores"
-            sh 'sudo docker rm mydb admindb web'
+            sh 'docker rm mydb admindb web'
             }
         }
         
@@ -43,7 +43,7 @@ pipeline {
                 echo message: "iniciando deploy de app"
                 dir("$ruta/appMiWeb"){
                     sh 'ls -la'
-                    sh 'sudo docker-compose up -d'
+                    sh 'docker-compose up -d'
                 }
             }
 

@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        ruta = "/home/jenkins/workspace"
+        ruta = "/home/jenkins"
         repo = "https://github.com/FredyQuej/appMiWeb.git"
     }
 

@@ -1,52 +1,61 @@
 pipeline {
     agent any
     
-    environment{
-        fichero = fileExists file: "$ruta/jenkins" 
+    environment {
         ruta = "/home/jenkins/workspace"
         repo = "https://github.com/FredyQuej/appMiWeb.git"
-      
     }
 
     stages {
-
-        stage ("validación false"){
-            when{expression {fichero=='false'}}
-            steps{ 
-                sh 'git clone $repo'
-                sh 'ls -la'
-            }
-        }
-        
-        stage ("validación true"){
-            when{expression {fichero=='true'}}
-            steps{
-                echo message: "clonando"
-                dir ("$ruta/jenkins"){
-                sh 'git pull'
-                sh 'ls -la'   
+        stage("Validación de existencia") {
+            steps {
+                script {
+                    env.fichero = fileExists("${ruta}/appMiWeb")
                 }
             }
         }
 
-        stage ("destructiondocker"){
-            steps{
-            echo message: "Deteniendo contenedores"
-            sh 'docker stop mydb admindb web'
-            echo message: "destruyendo contenedores"
-            sh 'docker rm mydb admindb web'
+        stage("Clonar repositorio") {
+            when {
+                expression { !env.fichero }
+            }
+            steps { 
+                sh "git clone ${repo} ${ruta}/appMiWeb"
+                sh "ls -la ${ruta}/appMiWeb"
             }
         }
         
-        stage ("dockerdeploy") {
-            steps{
-                echo message: "iniciando deploy de app"
-                dir("$ruta/jenkins"){
+        stage("Actualizar repositorio") {
+            when {
+                expression { env.fichero }
+            }
+            steps {
+                echo "Actualizando repositorio"
+                dir("${ruta}/appMiWeb") {
+                    sh 'git pull'
+                    sh 'ls -la'
+                }
+            }
+        }
+
+        stage("Detener y destruir contenedores") {
+            steps {
+                echo "Deteniendo contenedores"
+                sh 'docker stop mydb admindb web || true'
+                echo "Destruyendo contenedores"
+                sh 'docker rm mydb admindb web || true'
+            }
+        }
+        
+        stage("Desplegar Docker") {
+            steps {
+                echo "Iniciando deploy de app"
+                dir("${ruta}/appMiWeb") {
                     sh 'ls -la'
                     sh 'docker-compose up -d'
                 }
             }
-
         }     
     }
 }
+

@@ -1,5 +1,5 @@
 pipeline {
-    agent {label'UMGSTG'}
+    //agent {label'UMGSTG'}
     
     environment{
         fichero = fileExists file: "$ruta/appMiWeb" 

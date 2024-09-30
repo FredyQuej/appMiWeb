@@ -52,7 +52,7 @@ pipeline {
                 echo "Iniciando deploy de app"
                 dir("${ruta}/appMiWeb") {
                     sh 'ls -la'
-                    sh 'sudo docker-compose up -d'
+                    sh 'docker-compose up -d'
                 }
             }
         }     

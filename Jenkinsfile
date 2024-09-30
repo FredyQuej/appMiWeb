@@ -32,7 +32,7 @@ pipeline {
             steps {
                 echo "Actualizando repositorio"
                 dir("${ruta}/appMiWeb") {
-                    sh 'git pull'
+                    sh 'git pull origin main'
                     sh 'ls -la'
                 }
             }

@@ -53,6 +53,8 @@ pipeline {
                 echo "Iniciando deploy de app"
                 dir("${ruta}/appMiWeb") {
                     sh 'ls -la'
+                    sh 'docker --version'
+                    sh 'docker-compose --version'
                     sh 'docker-compose up'
                 }
             }
